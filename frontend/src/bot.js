@@ -4,7 +4,7 @@ import instance from './axios';
 import requests from './requests';
 
 export const QuestionGPT = () => {
-    const dummyText = "It is difficult to study English."
+    const welcomeText = "Let's have a conversation with me!"
 
     return (
         <ChatBot
@@ -12,34 +12,38 @@ export const QuestionGPT = () => {
         recognitionEnable={true}
         steps={[
             {
-            id: '1',
-            message: dummyText,
-            trigger: '2',
+                id: '1',
+                message: welcomeText,
+                trigger: 'chat',
             },
             {
-            id: '2',
-            component: <NextSentence />,
-            waitAction: true,
-            end: true,
+                id: 'chat',
+                user: true,
+                trigger: '3',
             },
+            {
+                id: '3',
+                component: <NextSentence />,
+                waitAction: true,
+                end: true,
+                },
         ]}
         />
     )
 }
 
-export const NextSentence = () => {
+export const NextSentence = (props) => {
     const [reply, setReply] = useState("JUST A MINUTES...");
-    const dummyText = "It is difficult to study English."
-  
+
     useEffect(() => {
-      async function fetchData() {
-        const chat_log = {input_text: dummyText}
-        const response = await instance.post(requests.chatGenerate, chat_log);
-        setReply(response.data);
-        return response
-      }
-  
-      fetchData();
+        async function fetchData() {
+            const chat_log = {input_text: props.steps.chat.message}
+            const response = await instance.post(requests.chatGenerate, chat_log);
+            setReply(response.data);
+            return response
+        }
+
+        fetchData();
     }, []);
 
     return (

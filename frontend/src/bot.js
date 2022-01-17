@@ -1,6 +1,7 @@
-import React, { useContext } from 'react';
+import React, { useState, useEffect } from "react";
 import ChatBot from 'react-simple-chatbot';
-import { ReplyText } from './App';
+import instance from './axios';
+import requests from './requests';
 
 export const QuestionGPT = () => {
     const dummyText = "It is difficult to study English."
@@ -27,7 +28,19 @@ export const QuestionGPT = () => {
 }
 
 export const NextSentence = () => {
-    const {reply} = useContext(ReplyText);
+    const [reply, setReply] = useState("JUST A MINUTES...");
+    const dummyText = "It is difficult to study English."
+  
+    useEffect(() => {
+      async function fetchData() {
+        const chat_log = {input_text: dummyText}
+        const response = await instance.post(requests.chatGenerate, chat_log);
+        setReply(response.data);
+        return response
+      }
+  
+      fetchData();
+    }, []);
 
     return (
         <div>{reply}</div>

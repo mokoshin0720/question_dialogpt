@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import ChatBot from 'react-simple-chatbot';
+import { ReplyText } from './App';
 
-export const QuestionGPT = (props) => {
+export const QuestionGPT = () => {
+    const dummyText = "It is difficult to study English."
+
     return (
         <ChatBot
         headerTitle="DialoGPT"
@@ -9,16 +12,25 @@ export const QuestionGPT = (props) => {
         steps={[
             {
             id: '1',
-            message: props.input_text,
+            message: dummyText,
             trigger: '2',
             },
             {
             id: '2',
-            message: props.reply_text,
+            component: <NextSentence />,
+            waitAction: true,
             end: true,
             },
         ]}
         />
+    )
+}
+
+export const NextSentence = () => {
+    const {reply} = useContext(ReplyText);
+
+    return (
+        <div>{reply}</div>
     )
 }
 

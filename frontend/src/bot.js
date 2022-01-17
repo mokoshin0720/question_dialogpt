@@ -1,7 +1,7 @@
 import React from 'react';
 import ChatBot from 'react-simple-chatbot';
- 
-export const Sample = () => {
+
+export const QuestionGPT = (props) => {
     return (
         <ChatBot
         headerTitle="DialoGPT"
@@ -9,22 +9,17 @@ export const Sample = () => {
         steps={[
             {
             id: '1',
-            message: 'お名前は?',
+            message: props.input_text,
             trigger: '2',
             },
             {
             id: '2',
-            user: true,
-            trigger: '3',
-            },
-            {
-            id: '3',
-            message: '{previousValue}さん,はじめまして!',
+            message: props.reply_text,
             end: true,
             },
         ]}
         />
     )
 }
-  
-export default Sample
+
+export default QuestionGPT

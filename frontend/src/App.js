@@ -1,5 +1,5 @@
 import React from 'react';
-import Sample from './sample';
+import Sample from './bot';
 import './App.css';
 
 function App() {

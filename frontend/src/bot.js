@@ -25,8 +25,8 @@ export const QuestionGPT = () => {
                 id: '3',
                 component: <NextSentence />,
                 waitAction: true,
-                end: true,
-                },
+                trigger: 'chat',
+            },
         ]}
         />
     )
@@ -35,11 +35,13 @@ export const QuestionGPT = () => {
 export const NextSentence = (props) => {
     const [reply, setReply] = useState("JUST A MINUTES...");
 
+    console.log(props)
     useEffect(() => {
         async function fetchData() {
             const chat_log = {input_text: props.steps.chat.message}
             const response = await instance.post(requests.chatGenerate, chat_log);
             setReply(response.data);
+            props.triggerNextStep();
             return response
         }
 
@@ -47,7 +49,11 @@ export const NextSentence = (props) => {
     }, []);
 
     return (
-        <div>{reply}</div>
+        <div>
+            <p>
+                {reply}
+            </p>
+        </div>
     )
 }
 

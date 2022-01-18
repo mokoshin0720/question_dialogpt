@@ -8,24 +8,25 @@ export const QuestionGPT = () => {
 
     return (
         <ChatBot
-        headerTitle="DialoGPT"
+        headerTitle="QuestionGPT"
         recognitionEnable={true}
         steps={[
             {
                 id: '1',
                 message: welcomeText,
-                trigger: 'chat',
+                trigger: 'user',
             },
             {
-                id: 'chat',
+                id: 'user',
                 user: true,
-                trigger: '3',
+                trigger: 'bot',
             },
             {
-                id: '3',
+                id: 'bot',
                 component: <NextSentence />,
                 waitAction: true,
-                trigger: 'chat',
+                asMessage: true,
+                trigger: 'user',
             },
         ]}
         />
@@ -33,14 +34,13 @@ export const QuestionGPT = () => {
 }
 
 export const NextSentence = (props) => {
-    const [reply, setReply] = useState("JUST A MINUTES...");
+    const [replies, setReplies] = useState([]);
 
-    console.log(props)
     useEffect(() => {
         async function fetchData() {
-            const chat_log = {input_text: props.steps.chat.message}
+            const chat_log = {input_text: props.steps.user.message}
             const response = await instance.post(requests.chatGenerate, chat_log);
-            setReply(response.data);
+            setReplies([...replies, response.data]);
             props.triggerNextStep();
             return response
         }
@@ -50,9 +50,7 @@ export const NextSentence = (props) => {
 
     return (
         <div>
-            <p>
-                {reply}
-            </p>
+                {replies}
         </div>
     )
 }

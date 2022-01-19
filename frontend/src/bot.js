@@ -39,7 +39,6 @@ export const NextSentence = (props) => {
 
     useEffect(() => {
         if (localStorage.getItem("previousMessage") === props.steps.user.message) {
-            console.log("here")
             return (
                 <div>
                     <Loading />
@@ -48,9 +47,6 @@ export const NextSentence = (props) => {
         }
 
         async function fetchData() {
-            console.log("======================")
-            console.log("api start")
-            console.log("======================")
             localStorage.setItem("previousMessage", props.steps.user.message)
             const chat_log = {input_text: props.steps.user.message}
             const response = await instance.post(requests.chatGenerate, chat_log);
@@ -61,7 +57,7 @@ export const NextSentence = (props) => {
         }
 
         fetchData();
-    });
+    }, [reply]);
 
     return (
         <div>

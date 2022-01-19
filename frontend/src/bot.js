@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import ChatBot from 'react-simple-chatbot';
+import ChatBot, { Loading } from 'react-simple-chatbot';
 import instance from './axios';
 import requests from './requests';
 
@@ -26,7 +26,7 @@ export const QuestionGPT = () => {
                 component: <NextSentence />,
                 waitAction: true,
                 asMessage: true,
-                trigger: 'user',
+                trigger: 'test',
             },
         ]}
         />
@@ -34,23 +34,41 @@ export const QuestionGPT = () => {
 }
 
 export const NextSentence = (props) => {
-    const [replies, setReplies] = useState([]);
+    const [reply, setReply] = useState();
+    const [loading, setLoading] = useState(true);
+
+    console.log(localStorage.getItem("previousMessage"))
+    console.log(props.steps.user.message)
 
     useEffect(() => {
+        if (localStorage.getItem("previousMessage") === props.steps.user.message) {
+            console.log("here")
+            return (
+                <div>
+                    <Loading />
+                </div>
+            )
+        }
+
         async function fetchData() {
+            console.log("======================")
+            console.log("api start")
+            console.log("======================")
+            localStorage.setItem("previousMessage", props.steps.user.message)
             const chat_log = {input_text: props.steps.user.message}
             const response = await instance.post(requests.chatGenerate, chat_log);
-            setReplies([...replies, response.data]);
+            setReply(response.data);
+            setLoading(false);
             props.triggerNextStep();
             return response
         }
 
         fetchData();
-    }, []);
+    });
 
     return (
         <div>
-                {replies}
+            {loading ? <Loading /> : reply}
         </div>
     )
 }

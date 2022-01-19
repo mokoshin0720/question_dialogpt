@@ -26,7 +26,7 @@ export const QuestionGPT = () => {
                 component: <NextSentence />,
                 waitAction: true,
                 asMessage: true,
-                trigger: 'test',
+                trigger: 'user',
             },
         ]}
         />
@@ -36,9 +36,6 @@ export const QuestionGPT = () => {
 export const NextSentence = (props) => {
     const [reply, setReply] = useState();
     const [loading, setLoading] = useState(true);
-
-    console.log(localStorage.getItem("previousMessage"))
-    console.log(props.steps.user.message)
 
     useEffect(() => {
         if (localStorage.getItem("previousMessage") === props.steps.user.message) {

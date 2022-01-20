@@ -31,7 +31,10 @@ def run_dialogpt(input_text):
     tokenizer = AutoTokenizer.from_pretrained('microsoft/DialoGPT-medium')
     model = AutoModelWithLMHead.from_pretrained('api/output-medium')
     
-    bot_input = tokenizer.encode(input_text + tokenizer.eos_token, return_tensors='pt')
+    print("==========================")
+    print(input_text)
+    bot_input = tokenizer.encode(input_text.replace("|", tokenizer.eos_token) + tokenizer.eos_token, return_tensors='pt')
+    print(bot_input)
     return generate_sentence(model, tokenizer, bot_input)
 
 def generate_sentence(model, tokenizer, bot_input):

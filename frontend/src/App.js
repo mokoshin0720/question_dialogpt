@@ -11,6 +11,8 @@ function App() {
     marginTop: 150
   };
 
+  localStorage.clear()
+
   return (
     <div className="App">
       <div style={style}>

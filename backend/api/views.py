@@ -31,10 +31,7 @@ def run_dialogpt(input_text):
     tokenizer = AutoTokenizer.from_pretrained('microsoft/DialoGPT-medium')
     model = AutoModelWithLMHead.from_pretrained('api/output-medium')
     
-    print("==========================")
-    print(input_text)
     bot_input = tokenizer.encode(input_text.replace("|", tokenizer.eos_token) + tokenizer.eos_token, return_tensors='pt')
-    print(bot_input)
     return generate_sentence(model, tokenizer, bot_input)
 
 def generate_sentence(model, tokenizer, bot_input):
@@ -62,7 +59,7 @@ def generate_sentence(model, tokenizer, bot_input):
                 is_skip = True
                 break
             
-            print("regenerate...")
+            # print("regenerate...")
             continue
         
         is_correct_sentence = True
